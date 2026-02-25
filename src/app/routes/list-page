@@ -1,0 +1,6 @@
+import { ListPage } from '../list-page';
+
+const listPage = {
+  path: 'list',
+  component: ListPage,
+};

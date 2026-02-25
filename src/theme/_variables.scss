@@ -1,0 +1,23 @@
+// Typography
+$font-family:
+  ui-sans-serif,
+  system-ui,
+  -apple-system,
+  Segoe UI,
+  Roboto,
+  Helvetica,
+  Arial;
+$font-size-base: 12px;
+
+// Spacing
+$gap: 16px;
+
+// Borders
+$radius-xl: 28px;
+$radius-lg: 20px;
+$radius-md: 16px;
+$radius-sm: 12px;
+
+// Shadows
+$shadow-card: 0 10px 22px rgba(0, 0, 0, 0.1);
+$shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.1);
