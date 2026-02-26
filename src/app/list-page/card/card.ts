@@ -1,5 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input, Signal } from '@angular/core';
+
 import { CoinMarket } from '../../../client';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-card',
@@ -8,6 +10,7 @@ import { CoinMarket } from '../../../client';
   styleUrl: './card.scss',
 })
 export class Card {
-  protected coin = input.required<CoinMarket>();
-
+  private sanitizer = inject(DomSanitizer);
+  public readonly coin: Signal<CoinMarket> = input.required<CoinMarket>();
+  protected readonly image: Signal<SafeUrl> = computed(() => this.coin().image && this.sanitizer.bypassSecurityTrustUrl(this.coin().image));
 }

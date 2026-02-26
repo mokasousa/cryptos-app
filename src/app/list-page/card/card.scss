@@ -1,0 +1,22 @@
+@use '../../../theme/variables' as *;
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $gap-16;
+    padding: $padding-12;
+    border-radius: $radius-12;
+    box-shadow: $shadow-card, $shadow-inset;
+    border: 1px solid var(--color-secondary);
+    background-color: var(--color-primary);
+    
+    img {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+}

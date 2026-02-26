@@ -1,0 +1,8 @@
+@use '../theme/variables' as *;
+
+body {
+    font-size: $font-size-12;
+    font-family: $font-family;
+    color: var(--text-primary);
+    background-color: var(--color-terciary);
+}

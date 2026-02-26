@@ -1,9 +1,10 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject, signal, Signal } from '@angular/core';
 
 import { Card } from './card/card';
 import { Search } from './search/search';
 import { CoinMarket, CoinsClient } from '../../client';
-import { Observable } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-page',
@@ -13,10 +14,11 @@ import { Observable } from 'rxjs';
 })
 export class ListPage {
   private readonly coinsClient = inject(CoinsClient);
-
-  protected coins$!: Observable<CoinMarket[]>;
+  
+  protected search: Signal<string> = signal('');
+  private coins$ = toObservable(this.search).pipe(switchMap(search => this.coinsClient.getMockList(search)));
+  protected coins: Signal<CoinMarket[]> = toSignal(this.coins$, { initialValue: [] });
 
   ngOnInit() {
-    this.coins$ = this.coinsClient.getMockList();
   }
 }

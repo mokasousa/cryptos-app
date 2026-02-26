@@ -1,6 +1,6 @@
 <app-search></app-search>
-<div  *ngIf="coins$ | async as coins" class="list">
-  @for (let coin of coins()) {
+<div class="list">
+  @for (coin of coins(); track coin.id; let index = $index) {
     <app-card [coin]="coin"></app-card>
   } @empty {
     <p>There are no items.</p>

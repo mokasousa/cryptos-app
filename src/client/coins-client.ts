@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -13,7 +13,7 @@ export class CoinsClient {
   private http = inject(HttpClient);
   private readonly headers = { 'x-cg-pro-api-key': environment.geckoApiKey };
 
-  getListWithMarketData() {
+  getListWithMarketData(): Observable<CoinMarket[]> {
     const items = map((items: any) => items.map((item: any) => new CoinMarket(item)));
     return this.http
       .get(`${environment.geckoUrl}/coins/markets?vs_currency=eur&price_change_percentage=1h`, {
@@ -22,13 +22,14 @@ export class CoinsClient {
       .pipe(items);
   }
 
-  getMockList() {
+  getMockList(search?: string): Observable<CoinMarket[]> {
+    console.log('Getting mock list', search);
     return of([
       {
         id: 'bitcoin',
         symbol: 'btc',
         name: 'Bitcoin',
-        image: '<https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400>',
+        image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400',
         current_price: 70187,
         market_cap: 1381651251183,
         market_cap_rank: 1,

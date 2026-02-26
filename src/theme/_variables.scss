@@ -7,16 +7,18 @@ $font-family:
   Roboto,
   Helvetica,
   Arial;
-$font-size-base: 12px;
+$font-size-12: 12px;
 
 // Spacing
-$gap: 16px;
+$gap-16: 16px;
+$padding-12: 12px;
+
 
 // Borders
-$radius-xl: 28px;
-$radius-lg: 20px;
-$radius-md: 16px;
-$radius-sm: 12px;
+$radius-28: 28px;
+$radius-20: 20px;
+$radius-16: 16px;
+$radius-12: 12px;
 
 // Shadows
 $shadow-card: 0 10px 22px rgba(0, 0, 0, 0.1);
