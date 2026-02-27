@@ -1,22 +1,72 @@
 @use '../../../theme/variables' as *;
+@use '../../../theme/helpers' as *;
 
 .card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: $gap-16;
-    padding: $padding-12;
-    border-radius: $radius-12;
-    box-shadow: $shadow-card, $shadow-inset;
-    border: 1px solid var(--color-secondary);
+    font-weight: 500;
+    @include row($gap);
+    padding: $padding;
+    border-radius: $radius;
+    min-width: min-content;
+    box-shadow: $shadow-card;
+    justify-content: space-between;
+    border: 1px solid var(--color-primary);
     background-color: var(--color-primary);
     
-    img {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
+    &-coin {
+        @include row($gap);
+
+        &-img {
+            @include round(40px);
+        }
+    
+        &-name {
+            @include column(4px);
+            font-size: 14px;
+
+            &-symbol {
+                font-size: 10px;
+                font-weight: 400;
+                text-transform: uppercase;
+                color: var(--color-text-secondary);
+            }
+        }
+
+        &-market {
+            &-up,
+            &-down {
+                @include column(4px);
+            }
+
+            &-up {
+                color: var(--color-success-primary);
+                & > .fa-caret-up {
+                    transform: translateY(1px);
+                }
+            }
+        
+            &-down {
+                color: var(--color-danger-primary);
+            }
+
+            &-percentage {
+                @include row(2px);
+            }
+        }
+    }
+
+    &-favorite {
+        @include row();
+        @include round(32px);
+        cursor: pointer;
+        font-size: 18px;
         justify-content: center;
-        border-radius: 50%;
+        background-color: var(--color-tertiary);
+        color: var(--color-secondary);
+
+        &.active {
+            & > .fa-star {
+                font-weight: 600;
+            }
+        }
     }
 }

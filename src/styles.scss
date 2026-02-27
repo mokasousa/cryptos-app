@@ -1,1 +1,9 @@
 @use './theme/colors';
+@use './theme/variables' as *;
+
+body {
+    font-size: $font-size;
+    font-family: $font-family;
+    color: var(--text-primary);
+    background-color: var(--color-tertiary);
+}

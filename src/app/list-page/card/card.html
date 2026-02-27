@@ -1,5 +1,31 @@
 <div class="card">
-    <div class="icon">
-      <img [alt]="coin().name" [src]="image()" />
+  <div class="card-coin">
+    <img class="card-coin-img" [alt]="coin().name" [src]="image()" />
+    <div class="card-coin-name">
+      <span>{{ coin().name }}</span>
+      <span class="card-coin-name-symbol">{{ coin().symbol }}</span>
     </div>
   </div>
+  <div class="card-coin">
+    @if (coin().up) {
+      <div class="card-coin-market-up">
+        <span>{{ coin().currentPrice | currency:'EUR':'symbol':'1.2-2' }}</span>
+        <span class="card-coin-market-percentage">
+          <i class="fa-solid fa-caret-up"></i>
+          <span>{{ coin().priceChange24h | number:'1.2-2' }}%</span>
+        </span>
+      </div>
+      } @else {
+        <div class="card-coin-market-down">
+          <span>{{ coin().currentPrice | currency:'EUR':'symbol':'1.2-2' }}</span>
+          <span class="card-coin-market-percentage">
+            <i class="fa-solid fa-caret-down"></i>
+            <span>{{ coin().priceChange24h | number:'1.2-2' }}%</span>
+          </span>
+        </div>
+      }
+    <div class="card-favorite">
+      <i class="fa-regular fa-star"></i>
+    </div>
+  </div>
+</div>
