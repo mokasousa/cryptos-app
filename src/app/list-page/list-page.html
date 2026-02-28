@@ -1,8 +1,8 @@
 <app-search></app-search>
 <div class="list">
-  @for (coin of coins(); track coin.id; let index = $index) {
-    <app-card [coin]="coin"></app-card>
+  @for (coin of coins(); track coin.id) {
+    <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
   } @empty {
-    <p>There are no items.</p>
+    <p>Search to add new cryptocurrencies to your favorites...</p>
   }
 </div>
