@@ -1,13 +1,13 @@
 <div class="card">
-  <div class="card-info">
-    <img class="card-img" [alt]="coin().name" [src]="image()" />
-    <div class="card-title">
-      <span class="card-label">{{ coin().symbol }} | #{{ coin().rank }}</span>
-      <span>{{ coin().name }}</span>
+  <div class="card-content">
+    <div class="card-info">
+      <img class="card-img" [alt]="coin().name" [src]="image()" />
+      <div class="card-title">
+        <span class="card-label">{{ coin().symbol }} | #{{ coin().rank }}</span>
+        <span>{{ coin().name }}</span>
+      </div>
     </div>
-  </div>
-  <div class="card-info">
-    <div class="card-content">
+    <div class="card-info">
       <div class="card-data">
         <div class="card-label">Volume</div>
         <div>{{ coin().volume | currencyAdapt }}</div>
@@ -30,11 +30,9 @@
           <span>{{ coin().priceChange24h | number:'1.2-2' }}%</span>
         </div>
       </div>
-
     </div>
-  
-    <div class="card-action" (click)="onToggleFavorite()">
-      <i class="fa-regular fa-star"></i>
-    </div>
+  </div>
+  <div class="card-action" (click)="onToggleFavorite()">
+    <i class="fa-regular fa-star"></i>
   </div>
 </div>

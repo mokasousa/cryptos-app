@@ -10,8 +10,7 @@
   border: 1px solid var(--color-primary);
   box-shadow: $shadow-md, $shadow-inset;
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  max-width: -webkit-fill-available;
 
   &-icon {
     font-size: 12px;

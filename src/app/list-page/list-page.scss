@@ -4,4 +4,5 @@
 .page-list {
     @include col($gap);
     align-items: center;
+    padding: $padding;
 }
