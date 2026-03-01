@@ -20,7 +20,10 @@ export class ListPage {
   private readonly coinsClient = inject(CoinsClient);
   protected search: WritableSignal<string> = signal('');
   private readonly coins$: Observable<CoinMarket[]> = toObservable(this.search).pipe(
-    switchMap((search: string) => this.coinsClient.getMockList(search)),
+    switchMap((search: string) => {
+      console.log('get api')
+      return this.coinsClient.getMockList(search);
+    }),
   );
   protected readonly coins: Signal<CoinMarket[]> = toSignal(this.coins$, { initialValue: [] });
 

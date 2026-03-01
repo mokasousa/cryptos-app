@@ -11,7 +11,7 @@
     gap: $gap;
 }
 
-@mixin column($gap: 0) {
+@mixin col($gap: 0) {
     display: flex;
     flex-direction: column;
     gap: $gap;

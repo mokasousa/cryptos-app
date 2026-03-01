@@ -1,8 +1,10 @@
-<app-search></app-search>
-<div class="list">
-  @for (coin of coins(); track coin.id) {
-    <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
-  } @empty {
-    <p>Search to add new cryptocurrencies to your favorites...</p>
-  }
-</div>
+<section class="page-list">
+  <app-search></app-search>
+  <div class="list">
+    @for (coin of coins(); track coin.id) {
+      <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
+    } @empty {
+      <p>Search to add new cryptocurrencies to your favorites...</p>
+    }
+  </div>
+</section>

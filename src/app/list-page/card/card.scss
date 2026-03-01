@@ -2,69 +2,77 @@
 @use '../../../theme/helpers' as *;
 
 .card {
-    font-weight: 500;
+  font-weight: 500;
+  @include row($gap);
+  padding: $padding;
+  border-radius: $radius;
+  width: 100%;
+  min-width: max-content;
+  max-width: 500px;
+  box-shadow: $shadow-lg;
+  justify-content: space-between;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  font-size: 14px;
+
+  &-label {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  &-content {
     @include row($gap);
-    padding: $padding;
-    border-radius: $radius;
-    min-width: min-content;
-    max-width: 600px;
-    box-shadow: $shadow-lg;
-    justify-content: space-between;
-    border: 1px solid var(--color-primary);
-    background-color: var(--color-primary);
+    align-items: baseline;
+  }
 
-    &-label {
-        font-size: 10px;
-        font-weight: 400;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
+  &-info {
+    @include row($gap);
+  }
+
+  &-img {
+    @include round(40px);
+  }
+
+  &-title {
+    @include col(2px);
+    font-size: 18px;
+  }
+
+  &-data {
+    @include col(2px);
+
+    &-icon {
+      @include row(2px);
+      font-size: 10px;
+
+      &.up {
+        color: var(--color-success-primary);
+        & > .fa-caret-up {
+          transform: translateY(1px);
+        }
+      }
+
+      &.down {
+        color: var(--color-danger-primary);
+      }
     }
+  }
 
-    &-info {
-        @include row($gap);
+  &-action {
+    @include row();
+    @include round(32px);
+    cursor: pointer;
+    font-size: 18px;
+    justify-content: center;
+    color: var(--color-secondary);
+    background-color: var(--color-tertiary);
 
-        &-img {
-            @include round(40px);
-        }
-    
-        &-title {
-            @include column(4px);
-            font-size: 14px;
-        }
-
-        &-data {
-            @include column(4px);
-
-            &.up {
-                color: var(--color-success-primary);
-                & > .fa-caret-up {
-                    transform: translateY(1px);
-                }
-            }
-        
-            &.down {
-                color: var(--color-danger-primary);
-            }
-
-            &-icon {
-                @include row(2px);
-            }
-        }
+    &.active {
+      & > .fa-star {
+        font-weight: 600;
+      }
     }
-
-    &-action {
-        @include row();
-        @include round(32px);
-        cursor: pointer;
-        font-size: 18px;
-        justify-content: center;
-        color: var(--color-secondary);
-        background-color: var(--color-tertiary);
-
-        &.active {
-            & > .fa-star {
-                font-weight: 600;
-            }
-        }
-    }
+  }
 }

@@ -25,11 +25,11 @@ export class CoinMarket {
     this.rank = data?.market_cap_rank;
     this.marketCap = data?.market_cap;
     this.currentPrice = data?.current_price;
-    this.priceChange24h = data?.price_change_percentage_24h;
-    this.marketCapChange24h = data?.market_cap_change_percentage_24h;
-    this.priceUp = this.priceChange24h > 0;
-    this.priceDown = this.priceChange24h < 0;
-    this.marketCapUp = this.marketCapChange24h > 0;
-    this.marketCapDown = this.marketCapChange24h < 0;
+    this.priceChange24h = Math.abs(data?.price_change_percentage_24h);
+    this.marketCapChange24h = Math.abs(data?.market_cap_change_percentage_24h);
+    this.priceUp = data?.price_change_percentage_24h > 0;
+    this.priceDown = data?.price_change_percentage_24h < 0;
+    this.marketCapUp = data?.market_cap_change_percentage_24h > 0;
+    this.marketCapDown = data?.market_cap_change_percentage_24h < 0;
   }
 }

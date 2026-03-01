@@ -2,33 +2,41 @@
 @use '../../../theme/helpers' as *;
 
 .search {
-  display: flex;
-  align-items: center;
-  gap: $gap;
+  @include row($gap);
   height: 44px;
-  padding: 0 14px;
+  padding: 0 8px;
   border-radius: 28px;
   background: var(--color-primary);
   border: 1px solid var(--color-primary);
   box-shadow: $shadow-md, $shadow-inset;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
 
   &-icon {
-    font-size: 14px;
-    color: var(--text-secondary);
+    font-size: 12px;
+    position: absolute;
+    left: 18px;
+    color: var(--color-text-secondary);
   }
 
   &-input {
     width: 100%;
-    background: var(--color-tertiary);
+    border-radius: 28px;
+    background-color: var(--color-primary);
     border: 1px solid var(--color-secondary);
-    font-size: 12px;
+    padding: 8px 8px 8px 28px;
+    color: var(--color-text-primary);
     font-weight: 400;
-    color: var(--text-primary);
-  
+    font-size: $font-size;
+    font-family: $font-family;
+
+    &:focus {
+      background-color: var(--color-tertiary);
+    }
+
     &::placeholder {
-      color: var(--color-text-secondary);
+      color: var(--color-text-muted);
     }
   }
 }
-
-

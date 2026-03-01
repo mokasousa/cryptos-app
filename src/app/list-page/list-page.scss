@@ -1,0 +1,7 @@
+@use '../../theme/variables' as *;
+@use '../../theme/helpers' as *;
+
+.page-list {
+    @include col($gap);
+    align-items: center;
+}
