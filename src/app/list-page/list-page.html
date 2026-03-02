@@ -1,4 +1,3 @@
-<div>loading: {{ loading() }}</div>
 <section class="page-list">
   <app-search (onInput)="onSearch($event)" [clear]="clear()"></app-search>
     @for (coin of searchable(); track coin.id) {

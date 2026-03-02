@@ -1,11 +1,12 @@
-import { EMPTY, Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Component, effect, inject, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal, Signal, WritableSignal } from '@angular/core';
+import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 
 import { Card } from './card/card';
 import { Search } from './search/search';
 import { CoinMarket, CoinsClient } from '../../client';
+import { LoaderService } from '../../shared/loader';
 
 @Component({
   selector: 'app-list-page',
@@ -15,8 +16,7 @@ import { CoinMarket, CoinsClient } from '../../client';
 })
 export class ListPage {
   private readonly coinsClient = inject(CoinsClient);
-  protected readonly loading: WritableSignal<boolean> = signal(false);
-
+  private readonly loaderService = inject(LoaderService);
   // Favorites
   protected readonly favorites: WritableSignal<CoinMarket[]> = signal([]);
 
@@ -29,8 +29,8 @@ export class ListPage {
     switchMap((search: string) => {
       const partial = search.trim().length > 3;
       if (partial) {
-        this.loading.set(true);
-        return this.coinsClient.getListWithMarketData(search).pipe(finalize(() => this.loading.set(false)));
+        this.loaderService.startLoading();
+        return this.coinsClient.getListWithMarketData(search).pipe(finalize(() => this.loaderService.stopLoading()));
       }
       return of([]);
     }),
@@ -44,10 +44,11 @@ export class ListPage {
   }
 
   private getFavorites(): void {
-    this.loading.set(true);
+    this.loaderService.startLoading();
+
     this.coinsClient
       .getListFavorites()
-      .pipe(finalize(() => this.loading.set(false)))
+      .pipe(finalize(() => this.loaderService.stopLoading()))
       .subscribe((favorites: CoinMarket[]) => this.favorites.set(favorites));
   }
 

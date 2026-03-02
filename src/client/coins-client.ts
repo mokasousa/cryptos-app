@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
@@ -37,6 +37,7 @@ export class CoinsClient {
         items,
         this.cacheService.fallbackList<CoinMarket[]>(COINS_FALLBACK),
         filter,
+        delay(1000)
       );
   }
 
