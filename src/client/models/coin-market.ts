@@ -20,7 +20,7 @@ export class CoinMarket {
     this.name = data?.name;
     this.image = data?.image;
     this.symbol = data?.symbol;
-    this.favorite = data?.favorite;
+    this.favorite = data?.favorite || false;
     this.volume = data?.total_volume;
     this.rank = data?.market_cap_rank;
     this.marketCap = data?.market_cap;

@@ -2,9 +2,9 @@
   <div class="card-content">
     <div class="card-info">
       <img class="card-img" [alt]="coin().name" [src]="image()" />
-      <div class="card-title">
-        <span class="card-label">{{ coin().symbol }} | #{{ coin().rank }}</span>
-        <span>{{ coin().name }}</span>
+      <div class="card-header">
+        <span class="card-header-label">{{ coin().symbol }} | #{{ coin().rank }}</span>
+        <span class="card-header-title" [title]="coin().name">{{ coin().name }}</span>
       </div>
     </div>
     <div class="card-info">
@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <div class="card-action" (click)="onToggleFavorite()">
+  <div class="card-action" [class.active]="coin().favorite" (click)="onToggleFavorite()">
     <i class="fa-regular fa-star"></i>
   </div>
 </div>

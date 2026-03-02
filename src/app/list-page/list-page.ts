@@ -1,12 +1,11 @@
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Component, inject, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, effect, inject, signal, Signal, WritableSignal } from '@angular/core';
 
 import { Card } from './card/card';
 import { Search } from './search/search';
 import { CoinMarket, CoinsClient } from '../../client';
-import { StorageService, StorageType } from '../../shared/storage';
 
 @Component({
   selector: 'app-list-page',
@@ -15,32 +14,57 @@ import { StorageService, StorageType } from '../../shared/storage';
   styleUrl: './list-page.scss',
 })
 export class ListPage {
-  private readonly favorites: WritableSignal<string[]> = signal([]);
-  private readonly storageService = inject(StorageService);
   private readonly coinsClient = inject(CoinsClient);
-  protected search: WritableSignal<string> = signal('');
-  private readonly coins$: Observable<CoinMarket[]> = toObservable(this.search).pipe(
-    switchMap((search: string) => this.coinsClient.getMockList(search)),
+  protected readonly loading: WritableSignal<boolean> = signal(false);
+
+  // Favorites
+  protected readonly favorites: WritableSignal<CoinMarket[]> = signal([]);
+
+  // Search
+  protected readonly clear: WritableSignal<boolean> = signal(false);
+  protected readonly search: WritableSignal<string> = signal('');
+  private readonly searchable$: Observable<CoinMarket[]> = toObservable(this.search).pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap((search: string) => {
+      const partial = search.trim().length > 3;
+      if (partial) {
+        this.loading.set(true);
+        return this.coinsClient.getListWithMarketData(search).pipe(finalize(() => this.loading.set(false)));
+      }
+      return of([]);
+    }),
   );
-  protected readonly coins: Signal<CoinMarket[]> = toSignal(this.coins$, { initialValue: [] });
+  protected readonly searchable: Signal<CoinMarket[]> = toSignal(this.searchable$, {
+    initialValue: [],
+  });
 
   ngOnInit(): void {
-    const favorites = this.storageService.getArray(StorageType.favorites);
-    this.favorites.set(favorites);
+    this.getFavorites();
   }
 
-  private updateFavorite(favorites: string[]): void {
-    this.favorites.update(() => [...favorites]);
-    this.storageService.setArray(StorageType.favorites, favorites);
+  private getFavorites(): void {
+    this.loading.set(true);
+    this.coinsClient
+      .getListFavorites()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((favorites: CoinMarket[]) => this.favorites.set(favorites));
+  }
+
+  protected onSearch(data: string): void {
+    this.clear.set(false);
+    this.search.set(data);
   }
 
   protected onSaveFavorite(id: string) {
-    const favorites = [...this.favorites(), id];
-    this.updateFavorite(favorites);
+    this.coinsClient.toggleFavorite(id, true);
+    this.getFavorites();
+    this.clear.set(true);
   }
 
   protected onRemoveFavorite(id: string) {
-    const favorites = this.favorites().filter((item: string) => item !== id);
-    this.updateFavorite(favorites);
+    this.coinsClient.toggleFavorite(id, false);
+    this.getFavorites();
+    this.clear.set(true);
   }
 }

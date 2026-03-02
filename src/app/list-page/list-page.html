@@ -1,10 +1,17 @@
+<div>loading: {{ loading() }}</div>
 <section class="page-list">
-  <app-search></app-search>
-  <div class="list">
-    @for (coin of coins(); track coin.id) {
+  <app-search (onInput)="onSearch($event)" [clear]="clear()"></app-search>
+    @for (coin of searchable(); track coin.id) {
       <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
     } @empty {
       <p>Search to add new cryptocurrencies to your favorites...</p>
     }
-  </div>
+
+    @if (favorites().length) {
+      <div class="page-list-favorites">
+        @for (coin of favorites(); track coin.id) {
+          <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
+        }
+      </div>
+    }
 </section>

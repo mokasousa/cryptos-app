@@ -5,4 +5,11 @@
     @include col($gap);
     align-items: center;
     padding: $padding;
+
+    &-favorites {
+    @include col($gap);
+    border-top: 1px solid var(--color-secondary);
+    align-items: center;
+    padding: $padding;
+}
 }
