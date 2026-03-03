@@ -1,15 +1,22 @@
 @use '../../theme/variables' as *;
 @use '../../theme/helpers' as *;
 
-.page-list {
-    @include col($gap);
-    align-items: center;
-    padding: $padding;
-
-    &-favorites {
-    @include col($gap);
-    border-top: 1px solid var(--color-secondary);
-    align-items: center;
-    padding: $padding;
+%list {
+  padding: $spacing-md;
+  @include col($spacing-lg);
+  text-align: -webkit-center;
 }
+.logo {
+    height: 20px;
+}
+
+.page-list {
+  &-searchable {
+    @extend %list;
+  }
+
+  &-favorites {
+    border-top: $border-secondary;
+    @extend %list;
+  }
 }

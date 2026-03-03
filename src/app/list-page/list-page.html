@@ -1,16 +1,17 @@
-<section class="page-list">
+<section class="page-list-searchable">
+  <img class="logo" src="logo-api.svg" alt="Powered by Gecko API">
   <app-search (onInput)="onSearch($event)" [clear]="clear()"></app-search>
     @for (coin of searchable(); track coin.id) {
       <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
     } @empty {
       <p>Search to add new cryptocurrencies to your favorites...</p>
     }
+  </section>
 
-    @if (favorites().length) {
-      <div class="page-list-favorites">
-        @for (coin of favorites(); track coin.id) {
-          <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
-        }
-      </div>
-    }
-</section>
+  @if (favorites().length) {
+    <section class="page-list-favorites">
+      @for (coin of favorites(); track coin.id) {
+        <app-card [coin]="coin" (save)="onSaveFavorite($event)" (remove)="onRemoveFavorite($event)"></app-card>
+      }
+    </section>
+  }

@@ -2,11 +2,11 @@
 @use './theme/variables' as *;
 
 body {
-  font-weight: 400;
-  font-size: $font-size;
   margin: 0;
+  font-size: $font-size-base;
   font-family: $font-family;
   color: var(--color-text-primary);
+  font-weight: $font-weight-regular;
   background-color: var(--color-tertiary);
 }
 

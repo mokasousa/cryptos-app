@@ -2,33 +2,35 @@
 @use '../../../theme/helpers' as *;
 
 .search {
-  @include row($gap);
   height: 44px;
-  padding: 0 8px;
-  border-radius: 28px;
+  width: auto;
+  max-width: 300px;
+  position: relative;
+  @include row($spacing-lg);
+  padding: 0 $spacing-sm;
+  border-radius: $radius-pill;
   background: var(--color-primary);
   border: 1px solid var(--color-primary);
   box-shadow: $shadow-md, $shadow-inset;
-  position: relative;
-  max-width: -webkit-fill-available;
 
   &-icon {
-    font-size: 12px;
+    left: $spacing-xl;
     position: absolute;
-    left: 18px;
+    font-size: $font-size-base;
     color: var(--color-text-secondary);
   }
 
   &-input {
     width: 100%;
-    border-radius: 28px;
-    background-color: var(--color-primary);
-    border: 1px solid var(--color-secondary);
-    padding: 8px 8px 8px 28px;
-    color: var(--color-text-primary);
-    font-weight: 400;
-    font-size: $font-size;
+    padding: $spacing-sm;
+    padding-left: $spacing-xxl;
     font-family: $font-family;
+    border: $border-secondary;
+    font-size: $font-size-base;
+    border-radius: $radius-pill;
+    color: var(--color-text-primary);
+    font-weight: $font-weight-regular;
+    background-color: var(--color-primary);
 
     &:focus {
       background-color: var(--color-tertiary);
