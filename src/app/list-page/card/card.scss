@@ -2,54 +2,51 @@
 @use '../../../theme/helpers' as *;
 
 .card {
-  font-weight: 500;
-  @include row($gap);
   padding: $padding;
   border-radius: $radius;
-  width: 600px;
   box-shadow: $shadow-lg;
-  justify-content: space-between;
   border: 1px solid var(--color-primary);
   background-color: var(--color-primary);
+  font-weight: 500;
   text-transform: uppercase;
   font-size: 14px;
-  min-width: 0;
+  @include row($gap);
+  width: 600px;
 
   &-content {
-    @include row($gap);
-    flex: 1 1 0;
+    @include row($gap, flex-start);
+    flex-grow: 1;
+    min-width: 0;
     justify-content: space-between;
-    
-      @include media($max: 425px) {
-        @include col($gap);
-        align-items: flex-start;
-      }
   }
 
-  &-info {
-    @include row($gap);
-    align-items: flex-start;
+  &-info-header {
+    @include row($gap, flex-start);
     min-width: 0;
+    flex: 1 0 0;
+  }
+
+  &-info-data {
+    @include row($gap, flex-start);
+    flex: 0 0 auto;
+    width: auto;
   }
 
   
-  &-img {
-    @include round(50px);
+  &-label {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
   }
   
   &-header {
     @include col(2px);
     min-width: 0;
 
-    &-label {
-      font-size: 10px;
-      font-weight: 400;
-      color: var(--color-text-secondary);
-      &-content {
-        @include row($gap);
-        align-items: baseline;
-      }
+    &-img {
+      @include round(50px);
     }
+
 
     &-title {
       font-size: 15px;
@@ -83,7 +80,6 @@
     @include round(32px);
     cursor: pointer;
     font-size: 18px;
-    flex: 0 0 auto;
     justify-content: center;
     color: var(--color-secondary);
     background-color: var(--color-tertiary);
@@ -95,3 +91,4 @@
     }
   }
 }
+   

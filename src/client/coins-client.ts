@@ -19,7 +19,13 @@ export class CoinsClient {
 
   getListWithMarketData(search?: string): Observable<CoinMarket[]> {
     const partial = (search ?? '').trim().toLowerCase();
-    const items = map((items: any[]) => items.map((item: any) => new CoinMarket(item)));
+    const items = map((items: any[]) => items.map((item: any) => {
+      const coin = new CoinMarket(item);
+      if (!coin.favorite) {
+         delete coin.favorite;
+      }
+      return coin;
+  }));
     const filter = map((items: CoinMarket[]) => {
       if (!partial) {
         return items;
@@ -37,13 +43,14 @@ export class CoinsClient {
         items,
         this.cacheService.fallbackList<CoinMarket[]>(COINS_FALLBACK),
         filter,
-        delay(1000)
       );
   }
 
   getListFavorites(): Observable<CoinMarket[]> {
     return this.getListWithMarketData().pipe(
-      map((items: CoinMarket[]) => items.filter((item) => item.favorite))
+      map((items: CoinMarket[]) => {
+        return items.filter((item) => item.favorite);
+  })
     );
   }
 

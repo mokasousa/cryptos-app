@@ -12,7 +12,7 @@ import { CurrencyAdaptPipe } from '../../../shared/currency-adapt';
   imports: [CommonModule, CurrencyAdaptPipe],
 })
 export class Card {
-  protected favorite: Signal<boolean> = computed(() => this.coin().favorite);
+  protected favorite: Signal<boolean | undefined> = computed(() => this.coin().favorite);
   private sanitizer = inject(DomSanitizer);
   public readonly coin: InputSignal<CoinMarket> = input.required<CoinMarket>();
   protected readonly image: Signal<string | null> = computed(() => this.coin().image && this.sanitizer.sanitize(SecurityContext.URL, this.coin().image));

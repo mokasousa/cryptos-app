@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, defer, of, tap } from 'rxjs';
+import { Observable, defer, of, map } from 'rxjs';
 
 interface Fallback<T> {
   t: number;
@@ -12,41 +12,32 @@ const DEFAULT_TIMESTAMP = 60 * 60 * 1000;
 export class CacheService {
   private readonly storage: Storage = localStorage;
 
-  fallbackList<T extends { id: string }[]>(
-    key: string,
-    t: number = DEFAULT_TIMESTAMP
-  ) {
+  fallbackList<T extends { id: string }[]>(key: string, t: number = DEFAULT_TIMESTAMP) {
     return (source: Observable<T>): Observable<T> =>
       defer(() => {
         const fallback = this.get<T>(key);
         const now = Date.now();
-
-        if (fallback && now - fallback.t < t) {
+        const withinThreshold = fallback && now - fallback.t < t;
+        if (withinThreshold) {
           return of(fallback.data);
         }
 
         return source.pipe(
-          tap((fresh) => {
-            const merged = fallback
-              ? this.mergeListById(fresh, fallback.data)
-              : fresh;
-
+          map((fresh) => {
+            const merged = fallback ? this.updateFreshItems(fresh, fallback.data) : fresh;
             this.set<T>(key, merged, now);
-          })
+            return merged;
+          }),
         );
       });
   }
 
-  private mergeListById<T extends { id: string }[]>(
-    fresh: T,
-    cached: T
-  ): T {
-    const map = new Map(
-      cached.map(item => [item.id, item])
-    );
+  private updateFreshItems<T extends { id: string }[]>(fresh: T, cached: T): T {
+    const map = new Map(cached.map((item) => [item.id, item]));
 
-    return fresh.map(freshItem => {
+    return fresh.map((freshItem) => {
       const cachedItem = map.get(freshItem.id);
+
       if (!cachedItem) {
         return freshItem;
       }
@@ -58,7 +49,7 @@ export class CacheService {
   public get<T>(key: string): Fallback<T> | null {
     const value = this.storage.getItem(key);
     if (!value) {
-        return null;
+      return null;
     }
 
     return JSON.parse(value) as Fallback<T>;

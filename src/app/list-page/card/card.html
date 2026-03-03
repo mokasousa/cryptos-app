@@ -1,38 +1,37 @@
 <div class="card">
-  <div class="card-content">
-    <div class="card-info">
-      <img class="card-img" [alt]="coin().name" [src]="image()" />
-      <div class="card-header">
-        <span class="card-header-label">{{ coin().symbol }} | #{{ coin().rank }}</span>
-        <span class="card-header-title" [title]="coin().name">{{ coin().name }}</span>
-      </div>
-    </div>
-    <div class="card-info">
-      <div class="card-data">
-        <div class="card-label">Volume</div>
-        <div>{{ coin().volume | currencyAdapt }}</div>
-      </div>
-    
-      <div class="card-data">
-        <div class="card-label">Market Cap</div>
-        <div>{{ coin().marketCap | currencyAdapt }}</div>
-        <div class="card-data-icon" [ngClass]="coin().marketCapUp ? 'up' : 'down'">
-          <i class="fa-solid" [ngClass]="coin().marketCapUp ? 'fa-caret-up' : 'fa-caret-down'"></i>
-          <span>{{ coin().marketCapChange24h | number:'1.2-2' }}%</span>
+    <div class="card-content">
+      <div class="card-info-header">
+        <img class="card-header-img" [alt]="coin().name" [src]="image()" />
+        <div class="card-header">
+          <span class="card-label">{{ coin().symbol }} | #{{ coin().rank }}</span>
+          <span class="card-header-title" [title]="coin().name">{{ coin().name }}</span>
         </div>
       </div>
-    
-      <div class="card-data">
-        <div class="card-label">Price</div>
-        <div>{{ coin().currentPrice | currencyAdapt }}</div>
-        <div class="card-data-icon" [ngClass]="coin().priceUp ? 'up' : 'down'">
-          <i class="fa-solid" [ngClass]="coin().priceUp ? 'fa-caret-up' : 'fa-caret-down'"></i>
-          <span>{{ coin().priceChange24h | number:'1.2-2' }}%</span>
+      <div class="card-info-data">
+        <div class="card-data">
+          <div class="card-label">Volume</div>
+          <div>{{ coin().volume | currencyAdapt }}</div>
+        </div>
+      
+        <div class="card-data">
+          <div class="card-label">Market Cap</div>
+          <div>{{ coin().marketCap | currencyAdapt }}</div>
+          <div class="card-data-icon" [ngClass]="coin().marketCapUp ? 'up' : 'down'">
+            <i class="fa-solid" [ngClass]="coin().marketCapUp ? 'fa-caret-up' : 'fa-caret-down'"></i>
+            <span>{{ coin().marketCapChange24h | number:'1.2-2' }}%</span>
+          </div>
+        </div>
+        <div class="card-data">
+          <div class="card-label">Price</div>
+          <div>{{ coin().currentPrice | currencyAdapt }}</div>
+          <div class="card-data-icon" [ngClass]="coin().priceUp ? 'up' : 'down'">
+            <i class="fa-solid" [ngClass]="coin().priceUp ? 'fa-caret-up' : 'fa-caret-down'"></i>
+            <span>{{ coin().priceChange24h | number:'1.2-2' }}%</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="card-action" [class.active]="coin().favorite" (click)="onToggleFavorite()">
-    <i class="fa-regular fa-star"></i>
-  </div>
+    <div class="card-action" [class.active]="coin().favorite" (click)="onToggleFavorite()">
+      <i class="fa-regular fa-star"></i>
+    </div>
 </div>

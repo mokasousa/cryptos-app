@@ -17,17 +17,16 @@ import { LoaderService } from '../../shared/loader';
 export class ListPage {
   private readonly coinsClient = inject(CoinsClient);
   private readonly loaderService = inject(LoaderService);
-  // Favorites
-  protected readonly favorites: WritableSignal<CoinMarket[]> = signal([]);
 
-  // Search
-  protected readonly clear: WritableSignal<boolean> = signal(false);
   protected readonly search: WritableSignal<string> = signal('');
+  protected readonly clear: WritableSignal<boolean> = signal(false);
+  protected readonly favorites: WritableSignal<CoinMarket[]> = signal([]);
+  
   private readonly searchable$: Observable<CoinMarket[]> = toObservable(this.search).pipe(
     debounceTime(300),
     distinctUntilChanged(),
     switchMap((search: string) => {
-      const partial = search.trim().length > 3;
+      const partial = search.trim().length >= 3;
       if (partial) {
         this.loaderService.startLoading();
         return this.coinsClient.getListWithMarketData(search).pipe(finalize(() => this.loaderService.stopLoading()));
@@ -48,8 +47,9 @@ export class ListPage {
 
     this.coinsClient
       .getListFavorites()
-      .pipe(finalize(() => this.loaderService.stopLoading()))
-      .subscribe((favorites: CoinMarket[]) => this.favorites.set(favorites));
+      .pipe(
+        finalize(() => this.loaderService.stopLoading())
+      ).subscribe((favorites: CoinMarket[]) => this.favorites.set(favorites));
   }
 
   protected onSearch(data: string): void {

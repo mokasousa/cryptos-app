@@ -7,7 +7,7 @@ export class CoinMarket {
   public volume: number;
   public priceUp: boolean;
   public marketCap: number;
-  public favorite: boolean;
+  public favorite?: boolean;
   public priceDown: boolean;
   public marketCapUp: boolean;
   public currentPrice: number;
@@ -20,7 +20,7 @@ export class CoinMarket {
     this.name = data?.name;
     this.image = data?.image;
     this.symbol = data?.symbol;
-    this.favorite = data?.favorite || false;
+    this.favorite = data?.favorite;
     this.volume = data?.total_volume;
     this.rank = data?.market_cap_rank;
     this.marketCap = data?.market_cap;

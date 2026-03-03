@@ -1,12 +1,14 @@
 @mixin round($size) {
+    min-width: $size;
+    min-height: $size;
     width: $size;
     height: $size;
     border-radius: 50%;
 }
 
-@mixin row($gap: 0) {
+@mixin row($gap: 0, $align: center) {
     display: flex;
-    align-items: center;
+    align-items: $align;
     flex-direction: row;
     gap: $gap;
 }
