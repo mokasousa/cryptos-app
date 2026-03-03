@@ -79,6 +79,9 @@
         "test": {
           "builder": "@ngx-env/builder:unit-test",
           "options": {}
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
