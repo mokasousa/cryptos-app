@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, defer, of, map } from 'rxjs';
 
 interface Fallback<T> {
   t: number;
@@ -12,51 +11,33 @@ const DEFAULT_TIMESTAMP = 60 * 60 * 1000;
 export class CacheService {
   private readonly storage: Storage = localStorage;
 
-  fallbackList<T extends { id: string }[]>(key: string, t: number = DEFAULT_TIMESTAMP) {
-    return (source: Observable<T>): Observable<T> =>
-      defer(() => {
-        const fallback = this.get<T>(key);
-        const now = Date.now();
-        const withinThreshold = fallback && now - fallback.t < t;
-        if (withinThreshold) {
-          return of(fallback.data);
-        }
-
-        return source.pipe(
-          map((fresh) => {
-            const merged = fallback ? this.updateFreshItems(fresh, fallback.data) : fresh;
-            this.set<T>(key, merged, now);
-            return merged;
-          }),
-        );
-      });
-  }
-
-  private updateFreshItems<T extends { id: string }[]>(fresh: T, cached: T): T {
-    const map = new Map(cached.map((item) => [item.id, item]));
-
-    return fresh.map((freshItem) => {
-      const cachedItem = map.get(freshItem.id);
-
-      if (!cachedItem) {
-        return freshItem;
-      }
-
-      return { ...cachedItem, ...freshItem };
-    }) as T;
-  }
-
-  public get<T>(key: string): Fallback<T> | null {
-    const value = this.storage.getItem(key);
-    if (!value) {
+  getTimed<T>(key: string, t: number = DEFAULT_TIMESTAMP): T | null {
+    const item = this.storage.getItem(key);
+    if (!item) {
       return null;
     }
 
-    return JSON.parse(value) as Fallback<T>;
+    const cached = JSON.parse(item) as Fallback<T>;
+    const threshold = cached && Date.now() - cached.t < t;
+
+    if (threshold) {
+      this.remove(key);
+      return null;
+    }
+
+    return cached.data;
   }
 
-  public set<T>(key: string, data: T, t: number): void {
-    const value: Fallback<T> = { data, t };
-    this.storage.setItem(key, JSON.stringify(value));
+  setTimed<T>(key: string, data: T): void {
+    const entry: Fallback<T> = {
+      data,
+      t: Date.now(),
+    };
+
+    this.storage.setItem(key, JSON.stringify(entry));
+  }
+
+  private remove(key: string): void {
+    this.storage.removeItem(key);
   }
 }

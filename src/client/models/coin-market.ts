@@ -32,4 +32,16 @@ export class CoinMarket {
     this.marketCapUp = data?.market_cap_change_percentage_24h > 0;
     this.marketCapDown = data?.market_cap_change_percentage_24h < 0;
   }
+
+  public static updateData(
+    fresh: CoinMarket[],
+    current: CoinMarket[]
+  ): CoinMarket[] {
+    const map = new Map(current.map((item) => [item.id, item]));
+
+    return fresh.map((freshItem) => {
+      const currentItem = map.get(freshItem.id);
+      return currentItem ? { ...currentItem, ...freshItem } : freshItem;
+    });
+  }
 }

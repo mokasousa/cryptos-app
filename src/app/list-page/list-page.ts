@@ -1,11 +1,8 @@
-import { Observable, of } from 'rxjs';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Component, inject, signal, Signal, WritableSignal } from '@angular/core';
-import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 
 import { Card } from './card/card';
 import { Search } from './search/search';
-import { CoinMarket, CoinsClient } from '../../client';
+import { CoinsClient } from '../../client';
 import { LoaderService } from '../../shared/loader';
 
 @Component({
@@ -20,36 +17,23 @@ export class ListPage {
 
   protected readonly search: WritableSignal<string> = signal('');
   protected readonly clear: WritableSignal<boolean> = signal(false);
-  protected readonly favorites: WritableSignal<CoinMarket[]> = signal([]);
-  
-  private readonly searchable$: Observable<CoinMarket[]> = toObservable(this.search).pipe(
-    debounceTime(300),
-    distinctUntilChanged(),
-    switchMap((search: string) => {
-      const partial = search.trim().length >= 3;
-      if (partial) {
-        this.loaderService.startLoading();
-        return this.coinsClient.getListWithMarketData(search).pipe(finalize(() => this.loaderService.stopLoading()));
-      }
-      return of([]);
-    }),
-  );
-  protected readonly searchable: Signal<CoinMarket[]> = toSignal(this.searchable$, {
-    initialValue: [],
+  protected readonly favorites = this.coinsClient.favorites;
+  protected readonly searchable = computed(() => {
+    const term = this.search().trim().toLowerCase();
+
+    if (term.length < 3) {
+      return [];
+    }
+
+    return this.coinsClient.coins().filter((item) =>
+      item.name.toLowerCase().includes(term)
+    );
   });
 
   ngOnInit(): void {
-    this.getFavorites();
-  }
-
-  private getFavorites(): void {
     this.loaderService.startLoading();
-
-    this.coinsClient
-      .getListFavorites()
-      .pipe(
-        finalize(() => this.loaderService.stopLoading())
-      ).subscribe((favorites: CoinMarket[]) => this.favorites.set(favorites));
+    debugger;
+    this.coinsClient.loadList().subscribe(() => this.loaderService.stopLoading());
   }
 
   protected onSearch(data: string): void {
@@ -57,15 +41,13 @@ export class ListPage {
     this.search.set(data);
   }
 
-  protected onSaveFavorite(id: string) {
+  protected onSaveFavorite(id: string): void {
     this.coinsClient.toggleFavorite(id, true);
-    this.getFavorites();
     this.clear.set(true);
   }
 
-  protected onRemoveFavorite(id: string) {
+  protected onRemoveFavorite(id: string): void {
     this.coinsClient.toggleFavorite(id, false);
-    this.getFavorites();
     this.clear.set(true);
   }
 }
